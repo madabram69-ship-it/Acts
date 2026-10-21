@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رحلة في سفر أعمال الرسل | Landing Page تفاعلي</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --navy: #0b1a33;
+            --navy-light: #122447;
+            --navy-soft: #1b2f5c;
+            --gold: #c9a227;
+            --gold-light: #e6c75a;
+            --gold-soft: #f0d98a;
+            --beige: #f5efe1;
+            --beige-dark: #e8ddc4;
+            --cream: #fdfaf2;
+            --text-dark: #1a1a1a;
+            --text-muted: #5a5a5a;
+            --success: #2e7d4f;
+            --danger: #b23a3a;
+            --shadow: 0 10px 30px rgba(11, 26, 51, 0.15);
+            --shadow-gold: 0 8px 24px rgba(201, 162, 39, 0.25);
+            --radius: 16px;
+            --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--cream);
+            color: var(--text-dark);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4 { font-family: 'Amiri', serif; line-height: 1.4; }
+        a { text-decoration: none; color: inherit; }
+        button { font-family: 'Cairo', sans-serif; cursor: pointer; border: none; }
+
+        body::before {
+            content: ""; position: fixed; inset: 0; z-index: -2;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(201, 162, 39, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(11, 26, 51, 0.05) 0%, transparent 45%),
+                repeating-linear-gradient(45deg, rgba(201, 162, 39, 0.025) 0px, rgba(201, 162, 39, 0.025) 1px, transparent 1px, transparent 22px),
+                repeating-linear-gradient(-45deg, rgba(11, 26, 51, 0.02) 0px, rgba(11, 26, 51, 0.02) 1px, transparent 1px, transparent 22px),
+                linear-gradient(135deg, #fdfaf2 0%, #f5efe1 100%);
+        }
+        body::after {
+            content: ""; position: fixed; inset: 0; z-index: -1; opacity: 0.35;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23c9a227' stroke-width='0.6' opacity='0.25'%3E%3Ccircle cx='60' cy='60' r='38'/%3E%3Cpath d='M60 22v76M22 60h76'/%3E%3Cpath d='M34 34l52 52M86 34L34 86'/%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* ===== Navbar ===== */
+        .navbar {
+            position: fixed; top: 0; right: 0; left: 0; z-index: 1000;
+            background: rgba(11, 26, 51, 0.92); backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--gold); transition: var(--transition);
+        }
+        .navbar.scrolled { box-shadow: var(--shadow); }
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 0.7rem 1.5rem;
+            display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+        }
+        .nav-logo { display: flex; align-items: center; gap: 0.6rem; color: var(--gold); font-family: 'Amiri', serif; font-size: 1.3rem; font-weight: 700; }
+        .nav-logo .logo-icon {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            display: grid; place-items: center; color: var(--navy); font-weight: 800; font-size: 1.1rem;
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.25);
+        }
+        .nav-links { display: flex; list-style: none; gap: 0.3rem; flex-wrap: wrap; justify-content: center; }
+        .nav-links a { color: var(--beige); padding: 0.45rem 0.85rem; border-radius: 8px; font-size: 0.92rem; font-weight: 600; transition: var(--transition); }
+        .nav-links a:hover, .nav-links a.active { color: var(--navy); background: var(--gold); }
+        .nav-toggle { display: none; background: transparent; color: var(--gold); font-size: 1.6rem; padding: 0.3rem 0.6rem; }
+
+        /* ===== Hero ===== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 7rem 1.5rem 4rem; position: relative;
+            background:
+                radial-gradient(ellipse at 50% 30%, rgba(201, 162, 39, 0.18) 0%, transparent 55%),
+                linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 55%, var(--navy-soft) 100%);
+            color: var(--beige); overflow: hidden;
+        }
+        .hero::before {
+            content: ""; position: absolute; inset: 0; opacity: 0.12;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23e6c75a' stroke-width='0.8'%3E%3Ccircle cx='100' cy='100' r='70'/%3E%3Ccircle cx='100' cy='100' r='50'/%3E%3Cpath d='M30 100h140M100 30v140'/%3E%3Cpath d='M50 50l100 100M150 50L50 150'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 300px;
+        }
+        .hero::after { content: ""; position: absolute; bottom: -2px; left: 0; right: 0; height: 80px; background: linear-gradient(to top, var(--cream), transparent); }
+        .hero-content { position: relative; z-index: 2; max-width: 860px; animation: fadeUp 1s ease both; }
+        .hero-badge { display: inline-block; padding: 0.4rem 1.3rem; border: 1.5px solid var(--gold); border-radius: 50px; color: var(--gold-light); font-size: 0.9rem; font-weight: 600; margin-bottom: 1.5rem; background: rgba(201, 162, 39, 0.08); }
+        .hero h1 { font-size: clamp(2.2rem, 6vw, 4rem); color: var(--gold-light); margin-bottom: 1.2rem; text-shadow: 0 4px 30px rgba(0, 0, 0, 0.4); }
+        .hero h1 span { color: #fff; }
+        .hero p { font-size: clamp(1rem, 2.2vw, 1.2rem); color: var(--beige-dark); max-width: 680px; margin: 0 auto 2.2rem; }
+        .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            padding: 0.85rem 2rem; border-radius: 50px; font-weight: 700; font-size: 1rem;
+            transition: var(--transition); border: 2px solid transparent;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--navy); box-shadow: var(--shadow-gold); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(201, 162, 39, 0.45); }
+        .btn-outline { background: transparent; color: var(--gold-light); border-color: var(--gold); }
+        .btn-outline:hover { background: var(--gold); color: var(--navy); transform: translateY(-3px); }
+        .hero-stats { display: flex; justify-content: center; gap: 2.5rem; margin-top: 3rem; flex-wrap: wrap; }
+        .hero-stat { text-align: center; }
+        .hero-stat .num { font-size: 1.9rem; font-weight: 800; color: var(--gold-light); font-family: 'Amiri', serif; }
+        .hero-stat .label { font-size: 0.85rem; color: var(--beige-dark); opacity: 0.85; }
+
+        /* ===== Sections ===== */
+        section { padding: 5rem 1.5rem; position: relative; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-kicker { color: var(--gold); font-weight: 700; font-size: 0.95rem; letter-spacing: 1px; margin-bottom: 0.6rem; display: block; }
+        .section-header h2 { font-size: clamp(1.9rem, 4.5vw, 2.8rem); color: var(--navy); margin-bottom: 0.8rem; position: relative; display: inline-block; }
+        .section-header h2::after { content: ""; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 70px; height: 3px; background: linear-gradient(90deg, transparent, var(--gold), transparent); border-radius: 2px; }
+        .section-header p { color: var(--text-muted); max-width: 640px; margin: 1.2rem auto 0; font-size: 1.02rem; }
+
+        /* ===== Cards ===== */
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.6rem; }
+        .quiz-card {
+            background: #fff; border-radius: var(--radius); padding: 1.8rem 1.5rem; text-align: center;
+            box-shadow: var(--shadow); border: 1px solid rgba(201, 162, 39, 0.18);
+            transition: var(--transition); position: relative; overflow: hidden;
+            display: flex; flex-direction: column; cursor: pointer;
+        }
+        .quiz-card::before { content: ""; position: absolute; top: 0; right: 0; left: 0; height: 4px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); transform: scaleX(0); transform-origin: right; transition: transform 0.4s ease; }
+        .quiz-card:hover { transform: translateY(-8px); box-shadow: 0 18px 40px rgba(11, 26, 51, 0.18); border-color: var(--gold); }
+        .quiz-card:hover::before { transform: scaleX(1); }
+        .quiz-card .card-icon { width: 64px; height: 64px; margin: 0 auto 1.1rem; border-radius: 16px; display: grid; place-items: center; font-size: 1.8rem; background: linear-gradient(135deg, var(--navy), var(--navy-soft)); color: var(--gold-light); box-shadow: 0 8px 20px rgba(11, 26, 51, 0.25); transition: var(--transition); }
+        .quiz-card:hover .card-icon { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--navy); transform: rotate(-6deg) scale(1.05); }
+        .quiz-card h3 { font-size: 1.25rem; color: var(--navy); margin-bottom: 0.5rem; }
+        .quiz-card p { color: var(--text-muted); font-size: 0.9rem; flex: 1; margin-bottom: 1.1rem; }
+        .card-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem; padding-top: 0.8rem; border-top: 1px dashed rgba(201, 162, 39, 0.35); }
+        .card-meta .status { font-weight: 700; color: var(--gold); }
+        .card-meta .status.done { color: var(--success); }
+        .btn-card { background: var(--navy); color: var(--beige); padding: 0.65rem 1.4rem; border-radius: 50px; font-weight: 700; font-size: 0.9rem; transition: var(--transition); width: 100%; }
+        .quiz-card:hover .btn-card { background: var(--gold); color: var(--navy); }
+
+        /* ===== Events Gallery (بديل الخريطة) ===== */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.8rem;
+        }
+        .event-card {
+            background: #fff;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .event-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 44px rgba(11, 26, 51, 0.18);
+            border-color: var(--gold);
+        }
+        .event-visual {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--navy), var(--navy-soft));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .event-visual svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            transition: transform 0.6s ease;
+        }
+        .event-card:hover .event-visual svg { transform: scale(1.08); }
+        .event-number {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--gold);
+            color: var(--navy);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-family: 'Amiri', serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            z-index: 2;
+        }
+        .event-ref-badge {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(11, 26, 51, 0.85);
+            color: var(--gold-light);
+            padding: 0.25rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--gold);
+            z-index: 2;
+        }
+        .event-body {
+            padding: 1.4rem 1.3rem 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .event-body h3 {
+            font-size: 1.25rem;
+            color: var(--navy);
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+        .event-body p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.75;
+            flex: 1;
+        }
+
+        /* ===== Modal ===== */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(11, 26, 51, 0.75); backdrop-filter: blur(6px); z-index: 2000; display: none; align-items: flex-start; justify-content: center; padding: 2rem 1rem; overflow-y: auto; }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
+        .quiz-modal { background: var(--cream); border-radius: var(--radius); max-width: 820px; width: 100%; margin: auto; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4); border: 2px solid var(--gold); overflow: hidden; animation: slideUp 0.4s ease; }
+        .modal-header { background: linear-gradient(135deg, var(--navy), var(--navy-soft)); color: var(--beige); padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+        .modal-header h3 { font-size: 1.25rem; color: var(--gold-light); }
+        .modal-close { background: rgba(255, 255, 255, 0.12); color: var(--beige); width: 38px; height: 38px; border-radius: 50%; font-size: 1.3rem; display: grid; place-items: center; transition: var(--transition); flex-shrink: 0; }
+        .modal-close:hover { background: var(--danger); transform: rotate(90deg); }
+        .modal-body { padding: 1.5rem; }
+
+        .progress-wrap { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 1.3rem; }
+        .progress-bar { flex: 1; height: 10px; background: var(--beige-dark); border-radius: 50px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 50px; transition: width 0.4s ease; width: 0%; }
+        .progress-text { font-size: 0.82rem; font-weight: 700; color: var(--navy); white-space: nowrap; }
+
+        .question-text { font-family: 'Amiri', serif; font-size: 1.3rem; color: var(--navy); margin-bottom: 1.2rem; font-weight: 700; line-height: 1.6; }
+        .question-type-tag { display: inline-block; font-family: 'Cairo', sans-serif; font-size: 0.72rem; background: rgba(201, 162, 39, 0.18); color: var(--gold); padding: 0.2rem 0.7rem; border-radius: 50px; margin-bottom: 0.6rem; font-weight: 700; }
+
+        .options-list { display: flex; flex-direction: column; gap: 0.7rem; }
+        .option-item { background: #fff; border: 2px solid var(--beige-dark); border-radius: 12px; padding: 0.9rem 1.1rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 0.8rem; font-size: 1rem; color: var(--text-dark); text-align: right; width: 100%; font-family: 'Cairo', sans-serif; }
+        .option-item:hover:not(.disabled) { border-color: var(--gold); background: rgba(201, 162, 39, 0.06); transform: translateX(-4px); }
+        .option-item .opt-letter { width: 30px; height: 30px; border-radius: 50%; background: var(--beige); color: var(--navy); display: grid; place-items: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; transition: var(--transition); }
+        .option-item.correct { border-color: var(--success); background: rgba(46, 125, 79, 0.1); }
+        .option-item.correct .opt-letter { background: var(--success); color: #fff; }
+        .option-item.wrong { border-color: var(--danger); background: rgba(178, 58, 58, 0.1); }
+        .option-item.wrong .opt-letter { background: var(--danger); color: #fff; }
+        .option-item.disabled { cursor: default; }
+        .option-item.selected { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.2); }
+
+        .order-instructions { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem; background: rgba(201, 162, 39, 0.08); padding: 0.6rem 0.9rem; border-radius: 8px; border-right: 3px solid var(--gold); }
+        .order-list { display: flex; flex-direction: column; gap: 0.6rem; }
+        .order-item { background: #fff; border: 2px solid var(--beige-dark); border-radius: 10px; padding: 0.8rem 1rem; display: flex; align-items: center; gap: 0.8rem; cursor: grab; transition: var(--transition); }
+        .order-item:hover { border-color: var(--gold); }
+        .order-item .drag-handle { color: var(--gold); font-size: 1.2rem; }
+        .order-item .order-num { width: 28px; height: 28px; border-radius: 50%; background: var(--navy); color: var(--gold-light); display: grid; place-items: center; font-weight: 800; font-size: 0.8rem; flex-shrink: 0; }
+        .order-item.correct { border-color: var(--success); background: rgba(46,125,79,0.08); }
+        .order-item.wrong { border-color: var(--danger); background: rgba(178,58,58,0.08); }
+        .btn-check-order { margin-top: 1rem; background: var(--navy); color: var(--beige); padding: 0.7rem 1.6rem; border-radius: 50px; font-weight: 700; transition: var(--transition); }
+        .btn-check-order:hover { background: var(--gold); color: var(--navy); }
+
+        .match-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .match-col { display: flex; flex-direction: column; gap: 0.6rem; }
+        .match-col h4 { font-family: 'Cairo', sans-serif; font-size: 0.85rem; color: var(--gold); text-align: center; margin-bottom: 0.2rem; }
+        .match-item { background: #fff; border: 2px solid var(--beige-dark); border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.9rem; cursor: pointer; transition: var(--transition); text-align: center; }
+        .match-item:hover { border-color: var(--gold); }
+        .match-item.selected { border-color: var(--gold); background: rgba(201,162,39,0.12); box-shadow: 0 0 0 3px rgba(201,162,39,0.18); }
+        .match-item.matched { border-color: var(--success); background: rgba(46,125,79,0.1); cursor: default; opacity: 0.85; }
+        .match-item.matched::after { content: " ✓"; color: var(--success); font-weight: 800; }
+
+        .feedback-box { margin-top: 1.2rem; border-radius: 12px; padding: 1rem 1.2rem; display: none; animation: fadeIn 0.4s ease; }
+        .feedback-box.show { display: block; }
+        .feedback-box.correct-fb { background: rgba(46, 125, 79, 0.1); border-right: 4px solid var(--success); }
+        .feedback-box.wrong-fb { background: rgba(178, 58, 58, 0.1); border-right: 4px solid var(--danger); }
+        .feedback-title { font-weight: 800; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; }
+        .correct-fb .feedback-title { color: var(--success); }
+        .wrong-fb .feedback-title { color: var(--danger); }
+        .feedback-explanation { font-size: 0.92rem; color: var(--text-dark); margin-bottom: 0.5rem; line-height: 1.7; }
+        .feedback-ref { font-size: 0.82rem; color: var(--gold); font-weight: 700; background: rgba(201, 162, 39, 0.12); display: inline-block; padding: 0.25rem 0.8rem; border-radius: 50px; }
+
+        .modal-nav { display: flex; justify-content: space-between; gap: 0.8rem; margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid var(--beige-dark); }
+        .modal-nav .btn { flex: 1; padding: 0.75rem 1rem; font-size: 0.95rem; }
+        .btn-nav { background: var(--navy); color: var(--beige); border-radius: 50px; font-weight: 700; transition: var(--transition); }
+        .btn-nav:hover:not(:disabled) { background: var(--gold); color: var(--navy); }
+        .btn-nav:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .results-screen { text-align: center; padding: 0.5rem; }
+        .results-emoji { font-size: 4rem; margin-bottom: 0.5rem; animation: pop 0.6s ease; }
+        .results-title { font-family: 'Amiri', serif; font-size: 1.8rem; color: var(--navy); margin-bottom: 0.3rem; }
+        .results-message { color: var(--text-muted); margin-bottom: 1.5rem; font-size: 1rem; }
+        .score-ring-wrap { display: flex; justify-content: center; margin-bottom: 1.5rem; }
+        .score-ring { width: 170px; height: 170px; border-radius: 50%; background: conic-gradient(var(--gold) 0deg, var(--gold) calc(var(--pct) * 3.6deg), var(--beige-dark) calc(var(--pct) * 3.6deg)); display: grid; place-items: center; position: relative; }
+        .score-ring::before { content: ""; position: absolute; inset: 12px; border-radius: 50%; background: var(--cream); }
+        .score-ring-inner { position: relative; z-index: 1; text-align: center; }
+        .score-ring-inner .pct { font-size: 2.4rem; font-weight: 800; color: var(--navy); font-family: 'Amiri', serif; line-height: 1; }
+        .score-ring-inner .lbl { font-size: 0.75rem; color: var(--text-muted); }
+        .results-stats { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .res-stat { background: #fff; border-radius: 12px; padding: 0.8rem 1.4rem; min-width: 110px; box-shadow: 0 4px 14px rgba(11,26,51,0.08); border-top: 3px solid var(--gold); }
+        .res-stat .val { font-size: 1.5rem; font-weight: 800; font-family: 'Amiri', serif; }
+        .res-stat.correct-stat .val { color: var(--success); }
+        .res-stat.wrong-stat .val { color: var(--danger); }
+        .res-stat .lbl { font-size: 0.78rem; color: var(--text-muted); }
+
+        .review-section { text-align: right; margin-top: 1.5rem; }
+        .review-section h4 { font-size: 1.15rem; color: var(--navy); margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gold); }
+        .review-item { background: #fff; border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: 0.8rem; border-right: 4px solid var(--danger); box-shadow: 0 4px 14px rgba(11,26,51,0.07); }
+        .review-q { font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; font-size: 0.98rem; }
+        .review-ans { font-size: 0.88rem; margin-bottom: 0.3rem; }
+        .review-ans .lbl-correct { color: var(--success); font-weight: 700; }
+        .review-exp { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.3rem; }
+        .review-ref-tag { font-size: 0.78rem; color: var(--gold); font-weight: 700; background: rgba(201,162,39,0.12); display: inline-block; padding: 0.2rem 0.7rem; border-radius: 50px; }
+        .no-errors { background: rgba(46,125,79,0.1); border-right: 4px solid var(--success); padding: 1rem; border-radius: 12px; color: var(--success); font-weight: 700; text-align: center; }
+        .results-actions { display: flex; gap: 0.8rem; margin-top: 1.6rem; flex-wrap: wrap; }
+        .results-actions .btn { flex: 1; min-width: 140px; }
+
+        /* ===== Facts ===== */
+        .facts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.4rem; }
+        .fact-card { background: #fff; border-radius: var(--radius); padding: 1.6rem 1.3rem; text-align: center; box-shadow: var(--shadow); border: 1px solid rgba(201, 162, 39, 0.2); cursor: pointer; transition: var(--transition); position: relative; min-height: 160px; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; }
+        .fact-card:hover { transform: translateY(-6px); box-shadow: 0 16px 36px rgba(11, 26, 51, 0.16); border-color: var(--gold); }
+        .fact-card .fact-front, .fact-card .fact-back { transition: var(--transition); }
+        .fact-card .fact-back { display: none; }
+        .fact-card.revealed .fact-front { display: none; }
+        .fact-card.revealed .fact-back { display: block; animation: fadeIn 0.4s ease; }
+        .fact-icon { font-size: 2.2rem; margin-bottom: 0.6rem; }
+        .fact-front h4 { font-size: 1.1rem; color: var(--navy); margin-bottom: 0.4rem; }
+        .fact-front .hint { font-size: 0.8rem; color: var(--gold); font-weight: 700; }
+        .fact-back p { font-size: 0.92rem; color: var(--text-dark); line-height: 1.7; margin-bottom: 0.6rem; }
+        .fact-back .fact-ref { font-size: 0.78rem; color: var(--gold); font-weight: 700; background: rgba(201,162,39,0.12); padding: 0.2rem 0.7rem; border-radius: 50px; }
+
+        .daily-question { margin-top: 2.5rem; background: linear-gradient(135deg, var(--navy), var(--navy-soft)); border-radius: var(--radius); padding: 2rem 1.6rem; text-align: center; color: var(--beige); box-shadow: var(--shadow); border: 2px solid var(--gold); }
+        .daily-question h3 { color: var(--gold-light); font-size: 1.4rem; margin-bottom: 0.8rem; }
+        .daily-question .dq-text { font-size: 1.05rem; margin-bottom: 1.1rem; font-family: 'Amiri', serif; line-height: 1.7; }
+        .daily-question .dq-answer { background: rgba(201,162,39,0.12); border-radius: 10px; padding: 0.9rem; font-size: 0.95rem; display: none; margin-top: 0.8rem; border-right: 3px solid var(--gold); text-align: right; }
+        .daily-question .dq-answer.show { display: block; animation: fadeIn 0.4s ease; }
+        .daily-question .dq-ref { color: var(--gold-light); font-weight: 700; font-size: 0.85rem; margin-top: 0.4rem; }
+
+        /* ===== XP ===== */
+        .xp-dashboard { display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem; background: linear-gradient(135deg, var(--navy), var(--navy-soft)); border-radius: var(--radius); padding: 2rem; color: var(--beige); border: 2px solid var(--gold); box-shadow: var(--shadow); }
+        .xp-box { text-align: center; }
+        .xp-box .xp-value { font-size: 3rem; font-weight: 800; font-family: 'Amiri', serif; color: var(--gold-light); line-height: 1.1; }
+        .xp-box .xp-label { font-size: 0.9rem; color: var(--beige-dark); }
+        .badges-box h3 { font-size: 1.1rem; color: var(--gold-light); margin-bottom: 0.8rem; }
+        .badges-grid { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .badge-item { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font-size: 1.4rem; background: rgba(255,255,255,0.08); border: 2px solid rgba(201,162,39,0.3); opacity: 0.35; transition: var(--transition); position: relative; cursor: default; }
+        .badge-item.earned { opacity: 1; background: linear-gradient(135deg, var(--gold), var(--gold-light)); border-color: var(--gold-soft); color: var(--navy); box-shadow: 0 0 16px rgba(201,162,39,0.4); }
+        .badge-item .badge-tooltip { position: absolute; bottom: 110%; right: 50%; transform: translateX(50%); background: var(--navy); color: var(--beige); font-size: 0.72rem; padding: 0.3rem 0.7rem; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: var(--transition); border: 1px solid var(--gold); }
+        .badge-item:hover .badge-tooltip { opacity: 1; }
+        .overall-progress-wrap { margin-top: 1.5rem; }
+        .overall-progress-label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--beige-dark); }
+        .overall-progress-bar { height: 12px; background: rgba(255,255,255,0.12); border-radius: 50px; overflow: hidden; }
+        .overall-progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 50px; transition: width 0.6s ease; width: 0%; }
+        .congrats-msg { margin-top: 1rem; background: rgba(201,162,39,0.15); border: 1px solid var(--gold); border-radius: 10px; padding: 0.9rem; text-align: center; color: var(--gold-light); font-weight: 700; font-size: 0.95rem; display: none; }
+        .congrats-msg.show { display: block; animation: pop 0.5s ease; }
+
+        /* ===== Footer ===== */
+        footer { background: var(--navy); color: var(--beige-dark); text-align: center; padding: 2.5rem 1.5rem; border-top: 3px solid var(--gold); }
+        footer .footer-brand { font-family: 'Amiri', serif; font-size: 1.4rem; color: var(--gold-light); margin-bottom: 0.4rem; }
+        footer p { font-size: 0.9rem; opacity: 0.85; margin-bottom: 1rem; }
+        .whatsapp-btn { display: inline-flex; align-items: center; gap: 0.6rem; background: #25D366; color: #fff; padding: 0.75rem 1.8rem; border-radius: 50px; font-weight: 700; font-size: 0.95rem; transition: var(--transition); box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35); }
+        .whatsapp-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(37, 211, 102, 0.5); }
+        .whatsapp-btn .wa-icon { font-size: 1.2rem; }
+
+        .xp-float { position: fixed; bottom: 1.4rem; left: 1.4rem; z-index: 1500; background: var(--navy); color: var(--gold-light); padding: 0.65rem 1.2rem; border-radius: 50px; font-weight: 800; font-size: 0.9rem; box-shadow: 0 8px 24px rgba(11,26,51,0.35); border: 2px solid var(--gold); display: flex; align-items: center; gap: 0.5rem; transition: var(--transition); }
+        .xp-float:hover { transform: translateY(-3px); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pop { 0% { transform: scale(0.6); opacity: 0; } 70% { transform: scale(1.08); } 100% { transform: scale(1); opacity: 1; } }
+
+        @media (max-width: 900px) { .xp-dashboard { grid-template-columns: 1fr; } .match-wrap { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) {
+            .nav-links { position: absolute; top: 100%; right: 0; left: 0; background: rgba(11, 26, 51, 0.98); flex-direction: column; padding: 1rem; gap: 0.4rem; display: none; border-bottom: 2px solid var(--gold); box-shadow: var(--shadow); }
+            .nav-links.open { display: flex; }
+            .nav-links a { padding: 0.7rem 1rem; font-size: 0.95rem; }
+            .nav-toggle { display: block; }
+            .hero { padding-top: 6rem; }
+            .hero-stats { gap: 1.5rem; }
+            .modal-body { padding: 1.1rem; }
+            .question-text { font-size: 1.1rem; }
+            .score-ring { width: 140px; height: 140px; }
+            .score-ring-inner .pct { font-size: 2rem; }
+            .events-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .hero-actions { flex-direction: column; width: 100%; }
+            .hero-actions .btn { width: 100%; }
+            .hero-stats { gap: 1rem; }
+            .hero-stat .num { font-size: 1.5rem; }
+            .results-stats { gap: 0.6rem; }
+            .res-stat { padding: 0.6rem 0.9rem; min-width: 90px; }
+            .modal-nav { flex-direction: column; }
+            .results-actions { flex-direction: column; }
+            .xp-float { bottom: 0.8rem; left: 0.8rem; font-size: 0.82rem; padding: 0.5rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== Navbar ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo"><div class="logo-icon">أع</div><span>أعمال الرسل</span></div>
+            <button class="nav-toggle" id="navToggle" aria-label="فتح القائمة">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero" class="active">الرئيسية</a></li>
+                <li><a href="#sections">الأقسام</a></li>
+                <li><a href="#events-section">أحداث السفر</a></li>
+                <li><a href="#facts-section">هل تعلم؟</a></li>
+                <li><a href="#xp-section">الإنجازات</a></li>
+                <li><a href="#footer">تواصل</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== Hero ===== -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <span class="hero-badge">✝ اكتشف كنز الكرازة الأولى</span>
+            <h1>رحلة في سفر <span>أعمال الرسل</span></h1>
+            <p>انطلق في مغامرة روحية عبر أصحاحات السفر، واستكشف حياة الرسل، رحلات بولس التبشيرية، المعجزات، والعظات التي غيّرت العالم. اختبر معرفتك، اجمع النقاط، وتعلّم من كلمة الله.</p>
+            <div class="hero-actions">
+                <button class="btn btn-primary" id="startAdventureBtn">🚀 ابدأ المغامرة</button>
+                <a href="#events-section" class="btn btn-outline">📜 أحداث السفر</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat"><div class="num">8</div><div class="label">أقسام تفاعلية</div></div>
+                <div class="hero-stat"><div class="num">40</div><div class="label">سؤال وجواب</div></div>
+                <div class="hero-stat"><div class="num">28</div><div class="label">أصحاحًا</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Sections ===== -->
+    <section id="sections">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-kicker">أقسام المسابقة</span>
+                <h2>ثمانية أبواب للمعرفة</h2>
+                <p>اختر قسمًا وابدأ اختبارك. كل إجابة صحيحة تمنحك نقاط خبرة وشارة، وتقدمك يُحفظ تلقائيًا.</p>
+            </div>
+            <div class="cards-grid" id="quizCardsGrid"></div>
+        </div>
+    </section>
+
+    <!-- ===== Events Section (بديل الخريطة) ===== -->
+    <section id="events-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-kicker">محطات الطريق</span>
+                <h2>أحداث سفر أعمال الرسل</h2>
+                <p>ست محطات كبرى ترسم خط الخلاص في سفر الأعمال — من صعود المسيح إلى كرازة بولس في رومية.</p>
+            </div>
+
+            <div class="events-grid">
+
+                <!-- 1: صعود المسيح وحلول الروح القدس -->
+                <div class="event-card">
+                    <div class="event-visual">
+                        <span class="event-number">١</span>
+                        <span class="event-ref-badge">أعمال 1-2</span>
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                            <defs>
+                                <radialGradient id="glow1" cx="50%" cy="35%" r="60%">
+                                    <stop offset="0%" stop-color="#f0d98a" stop-opacity="0.9"/>
+                                    <stop offset="60%" stop-color="#c9a227" stop-opacity="0.3"/>
+                                    <stop offset="100%" stop-color="#0b1a33" stop-opacity="0"/>
+                                </radialGradient>
+                            </defs>
+                            <rect width="400" height="200" fill="#0b1a33"/>
+                            <rect width="400" height="200" fill="url(#glow1)"/>
+                            <!-- أشعة النور -->
+                            <g stroke="#e6c75a" stroke-width="1.2" opacity="0.55">
+                                <line x1="200" y1="70" x2="120" y2="160"/>
+                                <line x1="200" y1="70" x2="200" y2="170"/>
+                                <line x1="200" y1="70" x2="280" y2="160"/>
+                                <line x1="200" y1="70" x2="80" y2="120"/>
+                                <line x1="200" y1="70" x2="320" y2="120"/>
+                                <line x1="200" y1="70" x2="60" y2="80"/>
+                                <line x1="200" y1="70" x2="340" y2="80"/>
+                            </g>
+                            <!-- حمامة رمز الروح القدس -->
+                            <g transform="translate(200 55)">
+                                <ellipse cx="0" cy="0" rx="22" ry="10" fill="#fdfaf2"/>
+                                <circle cx="14" cy="-4" r="7" fill="#fdfaf2"/>
+                                <path d="M-20 -2 L-34 -8 L-30 4 Z" fill="#fdfaf2"/>
+                                <path d="M6 -6 Q14 -18 22 -10" stroke="#c9a227" stroke-width="1.5" fill="none"/>
+                                <circle cx="16" cy="-5" r="1.4" fill="#0b1a33"/>
+                            </g>
+                            <!-- ألسنة نار فوق الرؤوس -->
+                            <g fill="#e6c75a" opacity="0.95">
+                                <path d="M140 150 Q143 138 146 150 Q143 147 140 150Z"/>
+                                <path d="M170 158 Q173 146 176 158 Q173 155 170 158Z"/>
+                                <path d="M200 162 Q203 150 206 162 Q203 159 200 162Z"/>
+                                <path d="M230 158 Q233 146 236 158 Q233 155 230 158Z"/>
+                                <path d="M260 150 Q263 138 266 150 Q263 147 260 150Z"/>
+                            </g>
+                            <!-- أرضية / هيكل -->
+                            <path d="M40 190 L360 190 L360 200 L40 200 Z" fill="#122447"/>
+                            <path d="M60 190 Q200 150 340 190" stroke="#c9a227" stroke-width="1.5" fill="none" opacity="0.5"/>
+                        </svg>
+                    </div>
+                    <div class="event-body">
+                        <h3>صعود المسيح وحلول الروح القدس</h3>
+                        <p>اختيار متياس رسولًا بدل يهوذا، ثم حلول الروح القدس في يوم الخمسين على التلاميذ في أورشليم، فامتلأ الجميع وتكلموا بألسنة أخرى.</p>
+                    </div>
+                </div>
+
+                <!-- 2: استشهاد استفانوس -->
+                <div class="event-card">
+                    <div class="event-visual">
+                        <span class="event-number">٢</span>
+                        <span class="event-ref-badge">أعمال 7-8</span>
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                            <defs>
+                                <radialGradient id="glow2" cx="50%" cy="50%" r="60%">
+                                    <stop offset="0%" stop-color="#e6c75a" stop-opacity="0.85"/>
+                                    <stop offset="60%" stop-color="#c9a227" stop-opacity="0.25"/>
+                                    <stop offset="100%" stop-color="#0b1a33" stop-opacity="0"/>
+                                </radialGradient>
+                            </defs>
+                            <rect width="400" height="200" fill="#0b1a33"/>
+                            <rect width="400" height="200" fill="url(#glow2)"/>
+                            <!-- نور حول استفانوس -->
+                            <circle cx="200" cy="105" r="55" fill="none" stroke="#e6c75a" stroke-width="1.5" opacity="0.45"/>
+                            <circle cx="200" cy="105" r="72" fill="none" stroke="#e6c75a" stroke-width="0.9" opacity="0.25"/>
+                            <!-- شكل الشهيد -->
+                            <g transform="translate(200 105)">
+                                <circle cx="0" cy="-38" r="13" fill="#f5efe1"/>
+                                <path d="M-16 -20 Q0 -30 16 -20 L20 30 Q0 40 -20 30 Z" fill="#e8ddc4"/>
+                                <path d="M-12 30 L-12 50 M12 30 L12 50" stroke="#e8ddc4" stroke-width="4" stroke-linecap="round"/>
+                                <path d="M-16 8 Q-40 -2 -46 -16" stroke="#f5efe1" stroke-width="4" fill="none" stroke-linecap="round"/>
+                                <path d="M16 8 Q40 -2 46 -16" stroke="#f5efe1" stroke-width="4" fill="none" stroke-linecap="round"/>
+                            </g>
+                            <!-- حجارة الرجم -->
+                            <g fill="#c9a227" opacity="0.8">
+                                <circle cx="120" cy="70" r="4"/>
+                                <circle cx="150" cy="140" r="3.5"/>
+                                <circle cx="260" cy="60" r="4"/>
+                                <circle cx="280" cy="150" r="3.5"/>
+                                <circle cx="100" cy="130" r="3"/>
+                                <circle cx="300" cy="95" r="3"/>
+                            </g>
+                            <!-- خطوط حركة -->
+                            <g stroke="#e6c75a" stroke-width="1" opacity="0.4">
+                                <line x1="110" y1="90" x2="150" y2="105"/>
+                                <line x1="270" y1="90" x2="240" y2="105"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="event-body">
+                        <h3>استشهاد استفانوس وانتشار الكنيسة</h3>
+                        <p>رُجم استفانوس أول شهيد مسيحي، فحدث اضطهاد عظيم في أورشليم، فتشتت المؤمنون وانتشر الإنجيل. فيلبس بشر في السامرة وعمّد الخصي الحبشي.</p>
+                    </div>
+                </div>
+
+                <!-- 3: اهتداء شاول -->
+                <div class="event-card">
+                    <div class="event-visual">
+                        <span class="event-number">٣</span>
+                        <span class="event-ref-badge">أعمال 9</span>
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                            <defs>
+                                <linearGradient id="sky3" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#1b2f5c"/>
+                                    <stop offset="100%" stop-color="#0b1a33"/>
+                                </linearGradient>
+                                <radialGradient id="light3" cx="50%" cy="20%" r="45%">
+                                    <stop offset="0%" stop-color="#fff8e1" stop-opacity="1"/>
+                                    <stop offset="40%" stop-color="#e6c75a" stop-opacity="0.7"/>
+                                    <stop offset="100%" stop-color="#c9a227" stop-opacity="0"/>
+                                </radialGradient>
+                            </defs>
+                            <rect width="400" height="200" fill="url(#sky3)"/>
+                            <!-- شعاع النور العلوي -->
+                            <polygon points="170,0 230,0 280,200 120,200" fill="url(#light3)" opacity="0.75"/>
+                            <!-- شمس ساطعة -->
+                            <circle cx="200" cy="20" r="30" fill="#fff8e1" opacity="0.9"/>
+                            <circle cx="200" cy="20" r="45" fill="#e6c75a" opacity="0.35"/>
+                            <!-- طريق دمشق -->
+                            <path d="M0 175 Q200 150 400 175 L400 200 L0 200 Z" fill="#1b2f5c"/>
+                            <path d="M0 175 Q200 150 400 175" stroke="#c9a227" stroke-width="1.5" fill="none" opacity="0.6"/>
+                            <!-- شاول ساجدًا -->
+                            <g transform="translate(200 155)">
+                                <circle cx="0" cy="-30" r="10" fill="#f5efe1"/>
+                                <path d="M-12 -18 Q0 -25 12 -18 L14 10 Q0 18 -14 10 Z" fill="#e8ddc4"/>
+                                <path d="M-14 10 L-22 22 M14 10 L22 22" stroke="#e8ddc4" stroke-width="4" stroke-linecap="round"/>
+                            </g>
+                            <!-- رفاقه -->
+                            <g transform="translate(130 140)" opacity="0.8">
+                                <circle cx="0" cy="-20" r="7" fill="#beige"/>
+                                <path d="M-8 -12 Q0 -16 8 -12 L9 8 Q0 12 -9 8 Z" fill="#e8ddc4"/>
+                            </g>
+                            <g transform="translate(270 140)" opacity="0.8">
+                                <circle cx="0" cy="-20" r="7" fill="#e8ddc4"/>
+                                <path d="M-8 -12 Q0 -16 8 -12 L9 8 Q0 12 -9 8 Z" fill="#e8ddc4"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="event-body">
+                        <h3>اهتداء شاول (بولس)</h3>
+                        <p>على طريق دمشق أضاء حول شاول نور من السماء وسمع صوت الرب، فتحول مضطهد الكنيسة إلى أعظم رسول للأمم.</p>
+                    </div>
+                </div>
+
+                <!-- 4: مجمع أورشليم -->
+                <div class="event-card">
+                    <div class="event-visual">
+                        <span class="event-number">٤</span>
+                        <span class="event-ref-badge">أعمال 15</span>
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                            <defs>
+                                <linearGradient id="bg4" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#122447"/>
+                                    <stop offset="100%" stop-color="#0b1a33"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="400" height="200" fill="url(#bg4)"/>
+                            <!-- أقواس القاعة -->
+                            <g stroke="#c9a227" stroke-width="1.2" fill="none" opacity="0.5">
+                                <path d="M40 180 L40 80 Q100 30 160 80 L160 180"/>
+                                <path d="M240 180 L240 80 Q300 30 360 80 L360 180"/>
+                            </g>
+                            <!-- مائدة المجمع -->
+                            <rect x="120" y="140" width="160" height="40" rx="6" fill="#1b2f5c" stroke="#c9a227" stroke-width="1.5"/>
+                            <!-- مخطوطة/لفيفة على المائدة -->
+                            <rect x="165" y="148" width="70" height="24" rx="3" fill="#f5efe1"/>
+                            <line x1="172" y1="156" x2="228" y2="156" stroke="#c9a227" stroke-width="1.2"/>
+                            <line x1="172" y1="162" x2="228" y2="162" stroke="#c9a227" stroke-width="1.2"/>
+                            <!-- رجال المجمع -->
+                            <g fill="#e8ddc4">
+                                <circle cx="130" cy="115" r="11"/>
+                                <path d="M118 128 Q130 120 142 128 L146 150 L114 150 Z"/>
+                                <circle cx="200" cy="105" r="12"/>
+                                <path d="M187 120 Q200 110 213 120 L218 150 L182 150 Z"/>
+                                <circle cx="270" cy="115" r="11"/>
+                                <path d="M258 128 Q270 120 282 128 L286 150 L254 150 Z"/>
+                            </g>
+                            <!-- حكمة -->
+                            <g stroke="#e6c75a" stroke-width="2" opacity="0.85">
+                                <line x1="200" y1="60" x2="200" y2="85"/>
+                                <line x1="185" y1="70" x2="215" y2="70"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="event-body">
+                        <h3>مجمع أورشليم</h3>
+                        <p>اجتمع الرسل والشيوخ لحل مسألة الأمم والناموس، فقرروا أن الخلاص بالإيمان بالمسيح لا بالختان وحفظ الناموس، فانفتح الباب للأمم.</p>
+                    </div>
+                </div>
+
+                <!-- 5: الرحلات التبشيرية -->
+                <div class="event-card">
+                    <div class="event-visual">
+                        <span class="event-number">٥</span>
+                        <span class="event-ref-badge">أعمال 13-21</span>
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                            <defs>
+                                <linearGradient id="sea5" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#1b2f5c"/>
+                                    <stop offset="100%" stop-color="#0b1a33"/>
+                                </linearGradient>
+                                <radialGradient id="sun5" cx="80%" cy="20%" r="25%">
+                                    <stop offset="0%" stop-color="#fff8e1"/>
+                                    <stop offset="100%" stop-color="#c9a227" stop-opacity="0"/>
+                                </radialGradient>
+                            </defs>
+                            <rect width="400" height="200" fill="url(#sea5)"/>
+                            <circle cx="330" cy="40" r="35" fill="url(#sun5)"/>
+                            <!-- أمواج البحر -->
+                            <g stroke="#c9a227" stroke-width="1.5" fill="none" opacity="0.5">
+                                <path d="M0 150 Q50 140 100 150 T200 150 T300 150 T400 150"/>
+                                <path d="M0 165 Q50 155 100 165 T200 165 T300 165 T400 165"/>
+                                <path d="M0 180 Q50 170 100 180 T200 180 T300 180 T400 180"/>
+                            </g>
+                            <!-- السفينة -->
+                            <g transform="translate(200 130)">
+                                <path d="M-55 0 Q0 30 55 0 L45 -12 L-45 -12 Z" fill="#c9a227"/>
+                                <rect x="-2" y="-70" width="4" height="60" fill="#e8ddc4"/>
+                                <path d="M2 -68 L2 -20 L48 -38 Z" fill="#f5efe1"/>
+                                <path d="M-2 -60 L-2 -25 L-38 -40 Z" fill="#e8ddc4"/>
+                            </g>
+                            <!-- نجم الشمال / بوصلة -->
+                            <g transform="translate(60 60)" stroke="#e6c75a" stroke-width="1.5" fill="none" opacity="0.8">
+                                <circle cx="0" cy="0" r="18"/>
+                                <path d="M0 -18 L4 -4 L18 0 L4 4 L0 18 L-4 4 L-18 0 L-4 -4 Z" fill="#e6c75a" opacity="0.7"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="event-body">
+                        <h3>رحلات بولس التبشيرية الثلاث</h3>
+                        <p>من أنطاكية انطلق بولس في ثلاث رحلات تبشيرية عبر قبرص وآسيا الصغرى ومكدونية وأخائية، مؤسسًا كنائس في أوروبا ومعلنًا الإنجيل للأمم.</p>
+                    </div>
+                </div>
+
+                <!-- 6: الأسر والوصول إلى رومية -->
+                <div class="event-card">
+                    <div class="event-visual">
+                        <span class="event-number">٦</span>
+                        <span class="event-ref-badge">أعمال 21-28</span>
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                            <defs>
+                                <linearGradient id="bg6" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#122447"/>
+                                    <stop offset="100%" stop-color="#0b1a33"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="400" height="200" fill="url(#bg6)"/>
+                            <!-- أعمدة رومانية -->
+                            <g fill="#1b2f5c" stroke="#c9a227" stroke-width="1.2">
+                                <rect x="50" y="70" width="20" height="110"/>
+                                <rect x="45" y="62" width="30" height="12"/>
+                                <rect x="45" y="178" width="30" height="10"/>
+                                <rect x="330" y="70" width="20" height="110"/>
+                                <rect x="325" y="62" width="30" height="12"/>
+                                <rect x="325" y="178" width="30" height="10"/>
+                            </g>
+                            <!-- بولس أسير بين عمودين -->
+                            <g transform="translate(200 110)">
+                                <circle cx="0" cy="-38" r="13" fill="#f5efe1"/>
+                                <path d="M-18 -22 Q0 -32 18 -22 L20 26 Q0 36 -20 26 Z" fill="#e8ddc4"/>
+                                <!-- سلاسل -->
+                                <g stroke="#c9a227" stroke-width="3" fill="none" stroke-linecap="round">
+                                    <path d="M-18 -10 Q-45 -15 -55 -5"/>
+                                    <path d="M18 -10 Q45 -15 55 -5"/>
+                                </g>
+                                <g fill="none" stroke="#e6c75a" stroke-width="2.5">
+                                    <circle cx="-40" cy="-12" r="4"/>
+                                    <circle cx="-50" cy="-7" r="4"/>
+                                    <circle cx="40" cy="-12" r="4"/>
+                                    <circle cx="50" cy="-7" r="4"/>
+                                </g>
+                                <!-- لفيفة في يده -->
+                                <rect x="-6" y="-6" width="12" height="20" fill="#f5efe1" stroke="#c9a227" stroke-width="1"/>
+                            </g>
+                            <!-- تاج / إكليل -->
+                            <g transform="translate(200 40)" fill="#e6c75a" opacity="0.9">
+                                <path d="M-22 0 L-14 -12 L-6 0 L0 -16 L6 0 L14 -12 L22 0 Z"/>
+                                <rect x="-24" y="0" width="48" height="5" rx="2"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="event-body">
+                        <h3>الأسر والوصول إلى رومية</h3>
+                        <p>قُبض على بولس في أورشليم، وحوكم أمام فيلكس وفستوس وأغريباس، ثم أُرسل إلى رومية. بعد عاصفة وتحطم السفينة، وصل وكرز بملكوت الله سنتين كاملتين.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Facts ===== -->
+    <section id="facts-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-kicker">معلومات شيقة</span>
+                <h2>هل تعلم؟</h2>
+                <p>اضغط على أي بطاقة لتكشف معلومة موثقة من سفر أعمال الرسل.</p>
+            </div>
+            <div class="facts-grid" id="factsGrid"></div>
+            <div class="daily-question" id="dailyQuestion">
+                <h3>📅 سؤال اليوم</h3>
+                <div class="dq-text" id="dqText">جارٍ التحميل...</div>
+                <button class="btn btn-primary" id="revealDailyBtn">أظهر الإجابة</button>
+                <div class="dq-answer" id="dqAnswer">
+                    <div id="dqAnswerText"></div>
+                    <div class="dq-ref" id="dqRef"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== XP ===== -->
+    <section id="xp-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-kicker">تقدمك الروحي</span>
+                <h2>نقاط الخبرة والإنجازات</h2>
+                <p>كل إجابة صحيحة تمنحك XP، وأكمل الأقسام لتفتح الشارات.</p>
+            </div>
+            <div class="xp-dashboard">
+                <div class="xp-box"><div class="xp-value" id="xpValue">0</div><div class="xp-label">نقطة خبرة</div></div>
+                <div class="badges-box">
+                    <h3>الشارات</h3>
+                    <div class="badges-grid" id="badgesGrid"></div>
+                    <div class="overall-progress-wrap">
+                        <div class="overall-progress-label"><span>التقدم الإجمالي في الأقسام</span><span id="overallProgressText">0 / 8</span></div>
+                        <div class="overall-progress-bar"><div class="overall-progress-fill" id="overallProgressFill"></div></div>
+                    </div>
+                    <div class="congrats-msg" id="congratsMsg">🎉 مبروك! لقد أكملت جميع الأقسام الثمانية. أنت خبير في سفر أعمال الرسل!</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer id="footer">
+        <div class="footer-brand">رحلة في سفر أعمال الرسل</div>
+        <p>تم التصميم والتطوير بواسطة <strong>Eng / Ebram Emad</strong></p>
+        <a href="https://wa.me/2012877076251" target="_blank" rel="noopener" class="whatsapp-btn"><span class="wa-icon">💬</span> تواصل معي عبر واتساب</a>
+        <p style="margin-top:1.2rem; font-size:0.8rem; opacity:0.6;">© 2025 — جميع الحقوق محفوظة. المحتوى تعليمي ومراجعه من سفر أعمال الرسل.</p>
+    </footer>
+
+    <div class="xp-float" id="xpFloat" title="نقاط خبرتك"><span>⭐</span> <span id="xpFloatValue">0</span> XP</div>
+
+    <!-- ===== Modal ===== -->
+    <div class="modal-overlay" id="quizModalOverlay">
+        <div class="quiz-modal" id="quizModal">
+            <div class="modal-header">
+                <h3 id="modalTitle">اختبار</h3>
+                <button class="modal-close" id="modalCloseBtn" aria-label="إغلاق">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // 1. الأقسام
+        // ============================================================
+        const quizSections = [
+            { id: 1, title: "الشخصيات الكتابية", icon: "👥", description: "تعرّف على بطرس، بولس، استفانوس، برنابا، وغيرهم من أبطال الكرازة الأولى." },
+            { id: 2, title: "المدن والأماكن", icon: "🏛", description: "أورشليم، أنطاكية، أفسس، رومية... اكتشف جغرافيا انتشار الإنجيل." },
+            { id: 3, title: "الأحداث والمعجزات", icon: "✨", description: "حلول الروح القدس، شفاء الأعرج، إقامة طابيثا، وزلازل خلاصية." },
+            { id: 4, title: "العظات والكرازة", icon: "📖", description: "خطابات بطرس وبولس التي غيّرت مسار التاريخ." },
+            { id: 5, title: "الأسباب والنتائج", icon: "⚖", description: "لماذا اضطُهدت الكنيسة؟ وما نتائج مجمع أورشليم؟" },
+            { id: 6, title: "الرحلات التبشيرية", icon: "⛵", description: "تتبع خطوات بولس في رحلاته الثلاث وصولًا إلى رومية." },
+            { id: 7, title: "الأرقام والترتيب والتفاصيل", icon: "🔢", description: "أعداد المؤمنين، تواريخ، تفاصيل دقيقة تختبر انتباهك." },
+            { id: 8, title: "الفهم الروحي والتطبيق العملي", icon: "🕊", description: "دروس روحية من سفر الأعمال لحياتك اليومية." }
+        ];
+
+        // ============================================================
+        // 2. بنك الأسئلة — 40 سؤالًا (5 لكل قسم) بأنواع متنوعة
+        // ============================================================
+        const quizQuestions = {
+            1: [
+                { type: 'mcq', q: "من هو الرسول الذي ألقى العظة الأولى في يوم الخمسين؟", options: ["بولس", "بطرس", "يوحنا", "استفانوس"], correct: 1, explanation: "بطرس هو من وقف مع الأحد عشر ورفع صوته وعظ في يوم الخمسين.", ref: "أعمال 2:14" },
+                { type: 'tf', q: "برنابا كان يُلقب بـ 'ابن التشجيع'.", correct: true, explanation: "اسم برنابا يعني 'ابن التشجيع'، وقد عُرف بتشجيعه للآخرين.", ref: "أعمال 4:36" },
+                { type: 'mcq', q: "بمن كان اسم بولس قبل اهتدائه؟", options: ["سيلا", "لوقا", "شاول", "تيموثاوس"], correct: 2, explanation: "كان يُدعى شاول الطرسوسي قبل أن يتحول إلى بولس.", ref: "أعمال 9:1-2" },
+                { type: 'match', q: "وصّل الشخصية بالمعلومة الصحيحة:", pairs: [ { left: "بطرس", right: "وعظ يوم الخمسين" }, { left: "استفانوس", right: "أول شهيد مسيحي" }, { left: "فيلبس", right: "عمّد الخصي الحبشي" }, { left: "برنابا", right: "ابن التشجيع" } ], explanation: "بطرس وعظ يوم الخمسين (أعمال 2)، استفانوس أول شهيد (أعمال 7)، فيلبس عمّد الخصي (أعمال 8)، برنابا ابن التشجيع (أعمال 4:36).", ref: "أعمال 2، 4:36، 7، 8" },
+                { type: 'mcq', q: "من هو الإنجيلي الذي كان يتكلم مع الخصي الحبشي؟", options: ["بطرس", "برنابا", "استفانوس", "فيلبس"], correct: 3, explanation: "فيلبس هو من قاده الروح للحديث مع الخصي الحبشي واعمده.", ref: "أعمال 8:26-39" }
+            ],
+            2: [
+                { type: 'mcq', q: "في أي مدينة حل الروح القدس على التلاميذ في يوم الخمسين؟", options: ["أنطاكية", "دمشق", "أورشليم", "رومية"], correct: 2, explanation: "كان التلاميذ مجتمعين في أورشليم حين حل عليهم الروح القدس.", ref: "أعمال 2:1-4" },
+                { type: 'mcq', q: "في أي مدينة دُعي التلاميذ 'مسيحيين' أول مرة؟", options: ["أنطاكية", "أورشليم", "أفسس", "كورنثوس"], correct: 0, explanation: "في أنطاكية دُعي التلاميذ مسيحيين أولًا.", ref: "أعمال 11:26" },
+                { type: 'tf', q: "مدينة أفسس كانت مركزًا لخدمة بولس لمدة سنتين.", correct: true, explanation: "خدم بولس في أفسس سنتين كاملتين في مدرسة tyrannus.", ref: "أعمال 19:9-10" },
+                { type: 'mcq', q: "إلى أي مدينة كان شاول ذاهبًا عندما ظهر له الرب؟", options: ["أنطاكية", "أورشليم", "طرسوس", "دمشق"], correct: 3, explanation: "كان شاول في طريقه إلى دمشق لاضطهاد المؤمنين.", ref: "أعمال 9:1-9" },
+                { type: 'match', q: "وصّل المدينة بالحدث المرتبط بها:", pairs: [ { left: "أورشليم", right: "حلول الروح القدس" }, { left: "دمشق", right: "اهتداء شاول" }, { left: "أنطاكية", right: "دُعي التلاميذ مسيحيين" }, { left: "رومية", right: "وصول بولس أسيرًا" } ], explanation: "أورشليم (أعمال 2)، دمشق (أعمال 9)، أنطاكية (أعمال 11:26)، رومية (أعمال 28).", ref: "أعمال 2، 9، 11:26، 28" }
+            ],
+            3: [
+                { type: 'mcq', q: "ما هي المعجزة التي حدثت لبولس وسيلا في السجن في فيلبي؟", options: ["نار من السماء", "زلزال وفتح الأبواب", "ظهور ملاك", "شفاء جميع المسجونين"], correct: 1, explanation: "حدث زلزال عظيم فانفتحت أبواب السجن.", ref: "أعمال 16:26" },
+                { type: 'tf', q: "بطرس أقام طابيثا من الموت في يافا.", correct: true, explanation: "بطرس صلى ثم قال 'طابيثا قومي' فقامت.", ref: "أعمال 9:40" },
+                { type: 'mcq', q: "ماذا حدث لشاول على طريق دمشق؟", options: ["أضاء نور من السماء وسمع صوت الرب", "رأى رؤيا في نومه", "هرب من اليهود", "أُصيب بمرض"], correct: 0, explanation: "أضاء حوله نور من السماء وسمع صوتًا.", ref: "أعمال 9:3-4" },
+                { type: 'order', q: "رتب الأحداث التالية حسب ورودها في سفر أعمال الرسل:", items: ["حلول الروح القدس", "استشهاد استفانوس", "اهتداء شاول", "مجمع أورشليم"], correct: [0, 1, 2, 3], explanation: "حلول الروح القدس (أعمال 2)، ثم استشهاد استفانوس (أعمال 7)، ثم اهتداء شاول (أعمال 9)، ثم مجمع أورشليم (أعمال 15).", ref: "أعمال 2، 7، 9، 15" },
+                { type: 'mcq', q: "ما هي المعجزة التي حدثت لبولس في مالطة؟", options: ["شفى جميع المرضى", "أقام الموتى", "لم يؤذه الأفعى", "ضرب الأرض فانفجرت"], correct: 2, explanation: "لدغته أفعى ولم يؤذه شيء.", ref: "أعمال 28:3-5" }
+            ],
+            4: [
+                { type: 'mcq', q: "ما هو موضوع عظة بطرس في يوم الخمسين؟", options: ["توبة الأمة", "الناموس والأنبياء", "المعمودية", "يسوع صُلب وقام وأُكرم ربًا"], correct: 3, explanation: "ركز على صلب يسوع وقيامته وأنه صار ربًا.", ref: "أعمال 2:22-36" },
+                { type: 'mcq', q: "لمن بشر فيلبس في الطريق إلى غزة؟", options: ["خصي حبشي", "جندي روماني", "تاجر يهودي", "سامري"], correct: 0, explanation: "بشر الخصي الحبشي وزير كنداكة ملكة الحبشة.", ref: "أعمال 8:27-35" },
+                { type: 'tf', q: "بولس كرز في الأريوباغوس بالإله غير المعلوم.", correct: true, explanation: "قال 'الذي تتقونه وأنتم لا تعرفونه، هذا الذي أنا أنادي به'.", ref: "أعمال 17:23" },
+                { type: 'mcq', q: "ما هو محور كرازة بولس في المجمع في تسالونيكي؟", options: ["أهمية الناموس", "أن المسيح يجب أن يتألم ويقوم", "التطهير", "السبت"], correct: 1, explanation: "كان يشرح ويبين أن المسيح يجب أن يتألم ويقوم من بين الأموات.", ref: "أعمال 17:3" },
+                { type: 'match', q: "وصّل العظة/الكرازة بصاحبها:", pairs: [ { left: "عظة يوم الخمسين", right: "بطرس" }, { left: "شرح إشعياء للخصي", right: "فيلبس" }, { left: "خطاب الأريوباغوس", right: "بولس" }, { left: "عظة الاستشهاد", right: "استفانوس" } ], explanation: "بطرس (أعمال 2)، فيلبس (أعمال 8)، بولس (أعمال 17)، استفانوس (أعمال 7).", ref: "أعمال 2، 7، 8، 17" }
+            ],
+            5: [
+                { type: 'mcq', q: "ما هو سبب شتات المؤمنين من أورشليم في أعمال 8:1؟", options: ["المجاعة", "الحرب", "الاضطهاد بعد استشهاد استفانوس", "الوباء"], correct: 2, explanation: "حدث اضطهاد عظيم بعد موت استفانوس فتشتت الجميع.", ref: "أعمال 8:1" },
+                { type: 'tf', q: "اضطهاد الكنيسة أدى إلى انتشار الإنجيل في السامرة.", correct: true, explanation: "الشتات بسبب الاضطهاد دفع المؤمنين للكرازة في السامرة.", ref: "أعمال 8:4-5" },
+                { type: 'mcq', q: "ما هي نتيجة مجمع أورشليم في أعمال 15؟", options: ["عدم تكليف الأمم بالختان", "منع الأمم من الإيمان", "إلزام الأمم بالناموس", "رفض كرازة بولس"], correct: 0, explanation: "قرر المجمع عدم تكليف الأمم بثقل الناموس.", ref: "أعمال 15:19-20" },
+                { type: 'mcq', q: "ما سبب سجن بولس وسيلا في فيلبي؟", options: ["السرقة", "الشغب", "التجديف", "إخراج روح نجس من جارية"], correct: 3, explanation: "أخرجوا الروح النجس من جارية فسُجنا.", ref: "أعمال 16:16-24" },
+                { type: 'mcq', q: "ما هي نتيجة رفض اليهود لكرازة بولس في أنطاكية بيسيدية؟", options: ["ترك بولس الكرازة", "توجه بولس إلى الأمم", "غضب بولس وصمت", "سجن بولس"], correct: 1, explanation: "قال 'ها نحن نتوجه إلى الأمم'.", ref: "أعمال 13:46" }
+            ],
+            6: [
+                { type: 'mcq', q: "من أين بدأت رحلة بولس التبشيرية الأولى؟", options: ["أورشليم", "دمشق", "أنطاكية", "طرسوس"], correct: 2, explanation: "من أنطاكية انطلق بولس وبرنابا.", ref: "أعمال 13:1-3" },
+                { type: 'tf', q: "الرحلة التبشيرية الثالثة زار فيها بولس أفسس لمدة طويلة.", correct: true, explanation: "مكث في أفسس سنتين.", ref: "أعمال 19:10" },
+                { type: 'mcq', q: "من رافق بولس في رحلته التبشيرية الثانية؟", options: ["برنابا", "مرقس", "لوقا", "سيلا"], correct: 3, explanation: "اختار بولس سيلا بعد الخلاف مع برنابا.", ref: "أعمال 15:40" },
+                { type: 'order', q: "رتب محطات رحلة بولس الثانية:", items: ["ترواس (رؤيا المكدوني)", "فيلبي (سجن بولس)", "تسالونيكي", "أثينا"], correct: [0, 1, 2, 3], explanation: "من ترواس إلى فيلبي ثم تسالونيكي ثم أثينا (أعمال 16-17).", ref: "أعمال 16-17" },
+                { type: 'mcq', q: "في أي رحلة عبر بولس إلى مكدونية (فيلبي، تسالونيكي)؟", options: ["الثانية", "الأولى", "الثالثة", "الرابعة"], correct: 0, explanation: "في الرحلة الثانية عبر إلى مكدونية.", ref: "أعمال 16:9-12" }
+            ],
+            7: [
+                { type: 'mcq', q: "كم عدد المؤمنين الذين آمنوا في يوم الخمسين؟", options: ["5000", "3000", "120", "300"], correct: 1, explanation: "آمن في ذلك اليوم نحو ثلاثة آلاف نفس.", ref: "أعمال 2:41" },
+                { type: 'mcq', q: "كم كان عدد التلاميذ المجتمعين في العلية قبل حلول الروح القدس؟", options: ["12", "70", "120", "500"], correct: 2, explanation: "كان عدد الأسماء معًا نحو مئة وعشرين.", ref: "أعمال 1:15" },
+                { type: 'tf', q: "استفانوس كان واحدًا من سبعة شمامسة.", correct: true, explanation: "اختير سبعة رجال ممتلئين من الروح القدس.", ref: "أعمال 6:3-5" },
+                { type: 'mcq', q: "كم كان عدد الرجال المؤمنين في أورشليم بعد عظة بطرس الثانية؟", options: ["3000", "120", "5000", "10000"], correct: 2, explanation: "آمن كثيرون وصار عدد الرجال نحو خمسة آلاف.", ref: "أعمال 4:4" },
+                { type: 'mcq', q: "كم يومًا كان شاول أعمى بعد رؤيا دمشق؟", options: ["سبعة أيام", "أربعين يومًا", "يومًا واحدًا", "ثلاثة أيام"], correct: 3, explanation: "كان ثلاثة أيام لا يبصر.", ref: "أعمال 9:9" }
+            ],
+            8: [
+                { type: 'mcq', q: "ما هو الدرس الروحي الرئيسي من حلول الروح القدس؟", options: ["الروح القدس ليس ضروريًا", "المعجزات فقط للرسل", "الله يمنح القوة للشهادة", "التلاميذ كانوا كاملين"], correct: 2, explanation: "وعد الآب بإرسال الروح القدس ليعطينا قوة للشهادة.", ref: "أعمال 1:8" },
+                { type: 'tf', q: "إيمان بولس تحول من اضطهاد الكنيسة إلى خدمتها.", correct: true, explanation: "من مضطهد إلى رسول.", ref: "أعمال 9" },
+                { type: 'mcq', q: "ماذا نتعلم من شجاعة بطرس ويوحنا أمام السنهدريم؟", options: ["التحدث بحكمة بشرية", "الخوف من الناس", "الصمت", "الثقة بالله في مواجهة الاضطهاد"], correct: 3, explanation: "كانا ممتلئين من الروح القدس وتكلما بجرأة.", ref: "أعمال 4:13" },
+                { type: 'mcq', q: "ماذا نتعلم من حياة استفانوس؟", options: ["الشجاعة في الشهادة والغفران", "الخوف من الموت", "التزمت", "الانعزال"], correct: 0, explanation: "شهد بجرأة وطلب المغفرة لقاتليه.", ref: "أعمال 7:59-60" },
+                { type: 'mcq', q: "ما التطبيق العملي من كرازة فيلبس للخصي؟", options: ["الاعتماد على الفهم الشخصي", "الطاعة الفورية لقيادة الروح القدس", "التأجيل", "التجاهل"], correct: 1, explanation: "فيلبس أطاع فورًا عندما قال الروح 'تقدّم'.", ref: "أعمال 8:29-30" }
+            ]
+        };
+
+        // ============================================================
+        // 3. هل تعلم
+        // ============================================================
+        const factsData = [
+            { icon: "🔥", title: "ألسنة النار", text: "في يوم الخمسين ظهرت ألسنة منقسمة كأنها من نار واستقرت على كل واحد من التلاميذ، وامتلأ الجميع من الروح القدس.", ref: "أعمال 2:3-4" },
+            { icon: "👑", title: "اسم 'مسيحيين'", text: "دُعي التلاميذ 'مسيحيين' أول مرة في أنطاكية، حوالي سنة 42-44 م.", ref: "أعمال 11:26" },
+            { icon: "🌊", title: "نجاة من الغرق", text: "في رحلة بولس إلى رومية، كان معه في السفينة 276 نفسًا، ونجوا جميعًا بعد تحطم السفينة.", ref: "أعمال 27:37، 27:44" },
+            { icon: "🐍", title: "الأفعى", text: "في مالطة لدغت أفعى سامة بولس، لكنه لم يتأثر، فظن السكان أنه إله.", ref: "أعمال 28:3-6" },
+            { icon: "🕊", title: "الروح القدس", text: "الروح القدس هو الذي قاد الكنيسة الأولى في اختيار الشمامسة، وإرسال المبشرين، وحل الخلافات.", ref: "أعمال 6:3؛ 13:2؛ 15:28" },
+            { icon: "🏛", title: "أريوباغوس", text: "خطاب بولس في أثينا كان أمام فلاسفة الأبيقوريين والرواقيين، وآمن بعضهم.", ref: "أعمال 17:16-34" },
+            { icon: "📜", title: "ناموس موسى", text: "مجمع أورشليم قرر أن الأمم لا يحتاجون إلى الختان ولا حفظ الناموس للخلاص، بل الإيمان بالمسيح.", ref: "أعمال 15:19-20" },
+            { icon: "⛓", title: "سجن بولس", text: "بولس كان أسيرًا في رومية لمدة سنتين، وكان يكرز بملكوت الله بكل مجاهرة.", ref: "أعمال 28:30-31" }
+        ];
+
+        const dailyQuestions = [
+            { q: "من هو الرسول الذي ألقى العظة الأولى في يوم الخمسين؟", a: "بطرس", ref: "أعمال 2:14" },
+            { q: "ما اسم أول شهيد مسيحي؟", a: "استفانوس", ref: "أعمال 7:59-60" },
+            { q: "في أي مدينة دُعي التلاميذ مسيحيين أول مرة؟", a: "أنطاكية", ref: "أعمال 11:26" },
+            { q: "كم عدد الذين آمنوا في يوم الخمسين؟", a: "نحو ثلاثة آلاف نفس", ref: "أعمال 2:41" },
+            { q: "من عمّد الخصي الحبشي؟", a: "فيلبس", ref: "أعمال 8:38" },
+            { q: "ما اسم الجزيرة التي نجوا إليها بعد غرق السفينة؟", a: "مالطة", ref: "أعمال 28:1" },
+            { q: "من هو الطبيب الذي كتب سفر أعمال الرسل؟", a: "لوقا", ref: "كولوسي 4:14" }
+        ];
+
+        // ============================================================
+        // 4. الحالة والتخزين
+        // ============================================================
+        const STORAGE_KEY = 'actsQuizState_v4';
+        let appState = { xp: 0, completedSections: {}, badges: [], sectionProgress: {}, lastDailyQuestionIndex: 0 };
+
+        function loadState() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) appState = { ...appState, ...JSON.parse(saved) };
+            } catch (e) { console.warn('خطأ تحميل الحالة', e); }
+        }
+        function saveState() {
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(appState)); }
+            catch (e) { console.warn('خطأ حفظ الحالة', e); }
+        }
+
+        // ============================================================
+        // 5. التهيئة
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderQuizCards();
+            renderFacts();
+            renderBadges();
+            updateXPDisplay();
+            updateOverallProgress();
+            initDailyQuestion();
+            initNav();
+            initModal();
+            initStartButton();
+            document.getElementById('xpFloatValue').textContent = appState.xp;
+        });
+
+        function initNav() {
+            const toggle = document.getElementById('navToggle');
+            const links = document.getElementById('navLinks');
+            toggle.addEventListener('click', () => links.classList.toggle('open'));
+            links.querySelectorAll('a').forEach(a => {
+                a.addEventListener('click', () => {
+                    links.classList.remove('open');
+                    links.querySelectorAll('a').forEach(x => x.classList.remove('active'));
+                    a.classList.add('active');
+                });
+            });
+            const navbar = document.getElementById('navbar');
+            const sections = document.querySelectorAll('section[id]');
+            window.addEventListener('scroll', () => {
+                navbar.classList.toggle('scrolled', window.scrollY > 60);
+                let current = '';
+                sections.forEach(sec => { if (window.scrollY >= sec.offsetTop - 120) current = sec.id; });
+                links.querySelectorAll('a').forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+            });
+        }
+
+        function initStartButton() {
+            document.getElementById('startAdventureBtn').addEventListener('click', () => {
+                document.getElementById('sections').scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        // ============================================================
+        // 6. بطاقات الأقسام
+        // ============================================================
+        function renderQuizCards() {
+            const grid = document.getElementById('quizCardsGrid');
+            grid.innerHTML = '';
+            quizSections.forEach(sec => {
+                const completed = appState.completedSections[sec.id];
+                const card = document.createElement('div');
+                card.className = 'quiz-card';
+                card.innerHTML = `
+                    <div class="card-icon">${sec.icon}</div>
+                    <h3>${sec.title}</h3>
+                    <p>${sec.description}</p>
+                    <div class="card-meta">
+                        <span>${quizQuestions[sec.id].length} أسئلة</span>
+                        <span class="status ${completed ? 'done' : ''}">
+                            ${completed ? '✓ مكتمل (' + completed.bestScore + '/' + completed.total + ')' : 'لم يبدأ بعد'}
+                        </span>
+                    </div>
+                    <button class="btn-card">${completed ? 'أعد الاختبار' : 'ابدأ الاختبار'}</button>
+                `;
+                card.addEventListener('click', () => openQuiz(sec.id));
+                grid.appendChild(card);
+            });
+        }
+
+        // ============================================================
+        // 7. الاختبار
+        // ============================================================
+        let currentQuiz = null;
+
+        function initModal() {
+            document.getElementById('modalCloseBtn').addEventListener('click', closeQuizModal);
+            document.getElementById('quizModalOverlay').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) closeQuizModal();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && document.getElementById('quizModalOverlay').classList.contains('active')) closeQuizModal();
+            });
+        }
+
+        function openQuiz(sectionId) {
+            const section = quizSections.find(s => s.id === sectionId);
+            const questions = quizQuestions[sectionId];
+            if (!section || !questions) return;
+            let progress = appState.sectionProgress[sectionId];
+            if (!progress || progress.answers.length !== questions.length || progress.finished) {
+                progress = { currentIndex: 0, answers: new Array(questions.length).fill(null), finished: false };
+            }
+            currentQuiz = {
+                sectionId, sectionTitle: section.title, questions,
+                answers: progress.answers.slice(),
+                currentIndex: progress.currentIndex,
+                finished: false
+            };
+            document.getElementById('modalTitle').textContent = section.title;
+            document.getElementById('quizModalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            renderQuestion();
+        }
+
+        function closeQuizModal() {
+            document.getElementById('quizModalOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+            currentQuiz = null;
+        }
+
+        function renderQuestion() {
+            if (!currentQuiz) return;
+            if (currentQuiz.finished) { renderResults(); return; }
+            const q = currentQuiz.questions[currentQuiz.currentIndex];
+            const idx = currentQuiz.currentIndex;
+            const total = currentQuiz.questions.length;
+            const answered = currentQuiz.answers[idx] !== null;
+            const body = document.getElementById('modalBody');
+
+            let html = `
+                <div class="progress-wrap">
+                    <span class="progress-text">السؤال ${idx + 1} / ${total}</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:${(idx / total) * 100}%"></div></div>
+                    <span class="progress-text">${Math.round((idx / total) * 100)}%</span>
+                </div>
+                <div class="question-type-tag">${getTypeLabel(q.type)}</div>
+                <div class="question-text">${q.q}</div>
+            `;
+            if (q.type === 'mcq' || q.type === 'tf') html += renderMCQOptions(q, answered);
+            else if (q.type === 'order') html += renderOrderQuestion(q, answered);
+            else if (q.type === 'match') html += renderMatchQuestion(q, answered);
+
+            html += renderFeedback(q, answered);
+            html += renderNavButtons(idx, total);
+            body.innerHTML = html;
+
+            if (q.type === 'mcq' || q.type === 'tf') {
+                body.querySelectorAll('.option-item').forEach(opt => {
+                    opt.addEventListener('click', () => {
+                        if (currentQuiz.answers[idx] !== null) return;
+                        selectMCQAnswer(parseInt(opt.dataset.optIndex));
+                    });
+                });
+            }
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            if (prevBtn) prevBtn.addEventListener('click', goPrev);
+            if (nextBtn) nextBtn.addEventListener('click', goNext);
+
+            if (q.type === 'order' && !answered) {
+                initOrderDrag();
+                const checkBtn = document.getElementById('checkOrderBtn');
+                if (checkBtn) checkBtn.addEventListener('click', checkOrderAnswer);
+            }
+            if (q.type === 'match' && !answered) initMatchInteraction();
+        }
+
+        function getTypeLabel(type) {
+            return { mcq: 'اختيار من متعدد', tf: 'صح أو خطأ', order: 'ترتيب الأحداث', match: 'توصيل المعلومات' }[type] || '';
+        }
+
+        function renderMCQOptions(q, answered) {
+            const options = q.type === 'tf' ? ['صح', 'خطأ'] : q.options;
+            const correctIdx = q.type === 'tf' ? (q.correct ? 0 : 1) : q.correct;
+            const userAns = currentQuiz.answers[currentQuiz.currentIndex];
+            const letters = ['أ', 'ب', 'ج', 'د', 'هـ', 'و'];
+            let html = '<div class="options-list">';
+            options.forEach((opt, i) => {
+                let cls = 'option-item';
+                if (answered) {
+                    cls += ' disabled';
+                    if (i === correctIdx) cls += ' correct';
+                    else if (i === userAns) cls += ' wrong';
+                }
+                html += `<button class="${cls}" data-opt-index="${i}"><span class="opt-letter">${letters[i] || i + 1}</span><span>${opt}</span></button>`;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function selectMCQAnswer(selected) {
+            const idx = currentQuiz.currentIndex;
+            if (currentQuiz.answers[idx] !== null) return;
+            currentQuiz.answers[idx] = selected;
+            const q = currentQuiz.questions[idx];
+            const correctIdx = q.type === 'tf' ? (q.correct ? 0 : 1) : q.correct;
+            if (selected === correctIdx) addXP(10);
+            saveCurrentProgress();
+            renderQuestion();
+        }
+
+        function renderOrderQuestion(q, answered) {
+            let html = `<div class="order-instructions">📌 اسحب العناصر لترتيبها حسب تسلسلها الصحيح، ثم اضغط "تحقق".</div><div class="order-list" id="orderList">`;
+            let items = q.items.map((text, i) => ({ text, originalIndex: i }));
+            if (!answered) items = shuffleArray(items);
+            else if (Array.isArray(currentQuiz.answers[currentQuiz.currentIndex])) {
+                items = currentQuiz.answers[currentQuiz.currentIndex].map(i => ({ text: q.items[i], originalIndex: i }));
+            }
+            items.forEach((item, displayIdx) => {
+                let cls = 'order-item';
+                if (answered) {
+                    cls += ' disabled';
+                    if (item.originalIndex === displayIdx) cls += ' correct';
+                    else cls += ' wrong';
+                }
+                html += `<div class="${cls}" data-orig-index="${item.originalIndex}" draggable="${!answered}"><span class="drag-handle">☰</span><span class="order-num">${displayIdx + 1}</span><span>${item.text}</span></div>`;
+            });
+            html += '</div>';
+            if (!answered) html += '<button class="btn-check-order" id="checkOrderBtn">تحقق من الترتيب</button>';
+            return html;
+        }
+
+        function initOrderDrag() {
+            const list = document.getElementById('orderList');
+            if (!list) return;
+            let dragged = null;
+            list.querySelectorAll('.order-item').forEach(item => {
+                item.addEventListener('dragstart', () => { dragged = item; item.style.opacity = '0.5'; });
+                item.addEventListener('dragend', () => { item.style.opacity = '1'; dragged = null; });
+                item.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    const target = e.target.closest('.order-item');
+                    if (target && target !== dragged) {
+                        const rect = target.getBoundingClientRect();
+                        if (e.clientY < rect.top + rect.height / 2) list.insertBefore(dragged, target);
+                        else list.insertBefore(dragged, target.nextSibling);
+                    }
+                });
+            });
+        }
+
+        function checkOrderAnswer() {
+            const idx = currentQuiz.currentIndex;
+            if (currentQuiz.answers[idx] !== null) return;
+            const q = currentQuiz.questions[idx];
+            const list = document.getElementById('orderList');
+            const userOrder = [];
+            list.querySelectorAll('.order-item').forEach(item => userOrder.push(parseInt(item.dataset.origIndex)));
+            currentQuiz.answers[idx] = userOrder;
+            if (arraysEqual(userOrder, q.correct)) addXP(10);
+            saveCurrentProgress();
+            renderQuestion();
+        }
+
+        function renderMatchQuestion(q, answered) {
+            let rightItems = q.pairs.map((p, i) => ({ text: p.right, idx: i }));
+            if (!answered) rightItems = shuffleArray(rightItems);
+            const userMatches = currentQuiz.answers[currentQuiz.currentIndex] || {};
+            let html = '<div class="match-wrap"><div class="match-col"><h4>العمود الأول</h4>';
+            q.pairs.forEach((p, i) => {
+                let cls = 'match-item';
+                if (answered) cls += ' disabled';
+                if (answered && userMatches[i] !== undefined) cls += ' matched';
+                html += `<div class="${cls}" data-left="${i}">${p.left}</div>`;
+            });
+            html += '</div><div class="match-col"><h4>العمود الثاني</h4>';
+            rightItems.forEach(item => {
+                let cls = 'match-item';
+                if (answered) cls += ' disabled';
+                if (answered && Object.values(userMatches).includes(item.idx)) cls += ' matched';
+                html += `<div class="${cls}" data-right="${item.idx}">${item.text}</div>`;
+            });
+            html += '</div></div>';
+            if (!answered) {
+                html += `<div class="order-instructions" style="margin-top:1rem;">اختر عنصرًا من العمود الأول ثم العنصر المقابل من العمود الثاني.</div>`;
+                html += `<button class="btn-check-order" id="checkMatchBtn">تحقق من التوصيل</button>`;
+            }
+            return html;
+        }
+
+        function initMatchInteraction() {
+            let selectedLeft = null;
+            const leftItems = document.querySelectorAll('.match-item[data-left]');
+            const rightItems = document.querySelectorAll('.match-item[data-right]');
+            leftItems.forEach(el => {
+                el.addEventListener('click', () => {
+                    if (el.classList.contains('matched')) return;
+                    leftItems.forEach(x => x.classList.remove('selected'));
+                    el.classList.add('selected');
+                    selectedLeft = parseInt(el.dataset.left);
+                });
+            });
+            rightItems.forEach(el => {
+                el.addEventListener('click', () => {
+                    if (selectedLeft === null || el.classList.contains('matched')) return;
+                    const rightIdx = parseInt(el.dataset.right);
+                    const idx = currentQuiz.currentIndex;
+                    if (!currentQuiz.answers[idx]) currentQuiz.answers[idx] = {};
+                    currentQuiz.answers[idx][selectedLeft] = rightIdx;
+                    el.classList.add('matched');
+                    const leftEl = document.querySelector(`.match-item[data-left="${selectedLeft}"]`);
+                    if (leftEl) leftEl.classList.add('matched');
+                    leftItems.forEach(x => x.classList.remove('selected'));
+                    selectedLeft = null;
+                    if (Object.keys(currentQuiz.answers[idx]).length === currentQuiz.questions[idx].pairs.length) checkMatchAnswer();
+                });
+            });
+            const checkBtn = document.getElementById('checkMatchBtn');
+            if (checkBtn) checkBtn.addEventListener('click', checkMatchAnswer);
+        }
+
+        function checkMatchAnswer() {
+            const idx = currentQuiz.currentIndex;
+            const q = currentQuiz.questions[idx];
+            const userMatches = currentQuiz.answers[idx] || {};
+            let isCorrect = true;
+            for (let i = 0; i < q.pairs.length; i++) if (userMatches[i] !== i) { isCorrect = false; break; }
+            if (isCorrect) addXP(10);
+            saveCurrentProgress();
+            renderQuestion();
+        }
+
+        function renderFeedback(q, answered) {
+            if (!answered) return '';
+            const idx = currentQuiz.currentIndex;
+            const userAns = currentQuiz.answers[idx];
+            let isCorrect = false;
+            if (q.type === 'mcq') isCorrect = userAns === q.correct;
+            else if (q.type === 'tf') isCorrect = userAns === (q.correct ? 0 : 1);
+            else if (q.type === 'order') isCorrect = arraysEqual(userAns, q.correct);
+            else if (q.type === 'match') {
+                isCorrect = true;
+                for (let i = 0; i < q.pairs.length; i++) if (!userAns || userAns[i] !== i) { isCorrect = false; break; }
+            }
+            const cls = isCorrect ? 'correct-fb' : 'wrong-fb';
+            const title = isCorrect ? '✅ إجابة صحيحة!' : '❌ إجابة خاطئة';
+            return `<div class="feedback-box show ${cls}"><div class="feedback-title">${title}</div><div class="feedback-explanation">${q.explanation}</div><span class="feedback-ref">📖 ${q.ref}</span></div>`;
+        }
+
+        function renderNavButtons(idx, total) {
+            return `<div class="modal-nav"><button class="btn btn-nav" id="prevBtn" ${idx === 0 ? 'disabled' : ''}>→ السابق</button><button class="btn btn-nav" id="nextBtn">${idx === total - 1 ? 'عرض النتائج' : 'التالي ←'}</button></div>`;
+        }
+
+        function goPrev() {
+            if (currentQuiz.currentIndex > 0) {
+                currentQuiz.currentIndex--;
+                saveCurrentProgress();
+                renderQuestion();
+            }
+        }
+
+        function goNext() {
+            const idx = currentQuiz.currentIndex;
+            const total = currentQuiz.questions.length;
+            if (idx < total - 1) {
+                currentQuiz.currentIndex++;
+                saveCurrentProgress();
+                renderQuestion();
+            } else finishQuiz();
+        }
+
+        function saveCurrentProgress() {
+            if (!currentQuiz) return;
+            appState.sectionProgress[currentQuiz.sectionId] = {
+                currentIndex: currentQuiz.currentIndex,
+                answers: currentQuiz.answers.slice(),
+                finished: false
+            };
+            saveState();
+        }
+
+        function finishQuiz() {
+            if (!currentQuiz) return;
+            currentQuiz.finished = true;
+            appState.sectionProgress[currentQuiz.sectionId].finished = true;
+
+            let correctCount = 0;
+            const wrongQuestions = [];
+            currentQuiz.questions.forEach((q, i) => {
+                const userAns = currentQuiz.answers[i];
+                let isCorrect = false;
+                if (q.type === 'mcq') isCorrect = userAns === q.correct;
+                else if (q.type === 'tf') isCorrect = userAns === (q.correct ? 0 : 1);
+                else if (q.type === 'order') isCorrect = arraysEqual(userAns, q.correct);
+                else if (q.type === 'match') {
+                    isCorrect = true;
+                    for (let k = 0; k < q.pairs.length; k++) if (!userAns || userAns[k] !== k) { isCorrect = false; break; }
+                }
+                if (isCorrect) correctCount++;
+                else wrongQuestions.push({ index: i, q, userAns });
+            });
+
+            const total = currentQuiz.questions.length;
+            const pct = Math.round((correctCount / total) * 100);
+            const sectionId = currentQuiz.sectionId;
+            const prev = appState.completedSections[sectionId];
+            appState.completedSections[sectionId] = {
+                bestScore: Math.max(correctCount, prev ? prev.bestScore : 0),
+                total, pct
+            };
+            const badgeId = 'badge-' + sectionId;
+            if (!appState.badges.includes(badgeId)) appState.badges.push(badgeId);
+            addXP(50);
+            saveState();
+            updateXPDisplay();
+            updateOverallProgress();
+            renderQuizCards();
+            renderBadges();
+            renderResults(correctCount, total, pct, wrongQuestions);
+        }
+
+        function renderResults(correctCount, total, pct, wrongQuestions) {
+            if (!currentQuiz) return;
+            if (correctCount === undefined) {
+                correctCount = 0; wrongQuestions = [];
+                currentQuiz.questions.forEach((q, i) => {
+                    const userAns = currentQuiz.answers[i];
+                    let isCorrect = false;
+                    if (q.type === 'mcq') isCorrect = userAns === q.correct;
+                    else if (q.type === 'tf') isCorrect = userAns === (q.correct ? 0 : 1);
+                    else if (q.type === 'order') isCorrect = arraysEqual(userAns, q.correct);
+                    else if (q.type === 'match') {
+                        isCorrect = true;
+                        for (let k = 0; k < q.pairs.length; k++) if (!userAns || userAns[k] !== k) { isCorrect = false; break; }
+                    }
+                    if (isCorrect) correctCount++;
+                    else wrongQuestions.push({ index: i, q, userAns });
+                });
+                total = currentQuiz.questions.length;
+                pct = Math.round((correctCount / total) * 100);
+            }
+
+            let emoji, message;
+            if (pct >= 90) { emoji = '🏆'; message = 'ممتاز! معرفتك بسفر الأعمال رائعة. استمر في الازدهار!'; }
+            else if (pct >= 75) { emoji = '🌟'; message = 'عمل رائع! أنت على الطريق الصحيح، راجع الأخطاء لتصل للكمال.'; }
+            else if (pct >= 50) { emoji = '📖'; message = 'بداية جيدة! المزيد من الدراسة سيجعلك تتقن السفر.'; }
+            else { emoji = '💪'; message = 'لا تستسلم! راجع الأخطاء وحاول مرة أخرى، ستتحسن!'; }
+
+            let html = `<div class="results-screen">
+                <div class="results-emoji">${emoji}</div>
+                <div class="results-title">انتهى الاختبار!</div>
+                <div class="results-message">${message}</div>
+                <div class="score-ring-wrap"><div class="score-ring" style="--pct:${pct}"><div class="score-ring-inner"><div class="pct">${pct}%</div><div class="lbl">النتيجة</div></div></div></div>
+                <div class="results-stats">
+                    <div class="res-stat correct-stat"><div class="val">${correctCount}</div><div class="lbl">إجابات صحيحة</div></div>
+                    <div class="res-stat wrong-stat"><div class="val">${total - correctCount}</div><div class="lbl">إجابات خاطئة</div></div>
+                    <div class="res-stat"><div class="val">${total}</div><div class="lbl">إجمالي الأسئلة</div></div>
+                </div>`;
+
+            if (wrongQuestions.length > 0) {
+                html += `<div class="review-section"><h4>📝 مراجعة الأخطاء (${wrongQuestions.length})</h4>`;
+                wrongQuestions.forEach(wq => {
+                    const q = wq.q;
+                    let correctText = '';
+                    if (q.type === 'mcq') correctText = q.options[q.correct];
+                    else if (q.type === 'tf') correctText = q.correct ? 'صح' : 'خطأ';
+                    else if (q.type === 'order') correctText = q.items.join(' ← ');
+                    else if (q.type === 'match') correctText = q.pairs.map(p => p.left + ' = ' + p.right).join(' | ');
+                    html += `<div class="review-item"><div class="review-q">س${wq.index + 1}: ${q.q}</div><div class="review-ans"><span class="lbl-correct">الإجابة الصحيحة:</span> ${correctText}</div><div class="review-exp">${q.explanation}</div><span class="review-ref-tag">📖 ${q.ref}</span></div>`;
+                });
+                html += `</div>`;
+            } else html += `<div class="no-errors">🎉 لا توجد أخطاء! أداء مثالي!</div>`;
+
+            html += `<div class="results-actions"><button class="btn btn-primary" id="retryBtn">🔄 إعادة الاختبار</button><button class="btn btn-outline" id="backToSectionsBtn" style="color:var(--navy);border-color:var(--navy);">🏠 العودة إلى الأقسام</button></div></div>`;
+            document.getElementById('modalBody').innerHTML = html;
+
+            document.getElementById('retryBtn').addEventListener('click', () => {
+                appState.sectionProgress[currentQuiz.sectionId] = { currentIndex: 0, answers: new Array(currentQuiz.questions.length).fill(null), finished: false };
+                saveState();
+                currentQuiz.answers = new Array(currentQuiz.questions.length).fill(null);
+                currentQuiz.currentIndex = 0;
+                currentQuiz.finished = false;
+                renderQuestion();
+            });
+            document.getElementById('backToSectionsBtn').addEventListener('click', () => {
+                closeQuizModal();
+                document.getElementById('sections').scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        // ============================================================
+        // 8. XP والشارات
+        // ============================================================
+        function addXP(amount) {
+            appState.xp += amount;
+            document.getElementById('xpFloatValue').textContent = appState.xp;
+            document.getElementById('xpValue').textContent = appState.xp;
+            saveState();
+        }
+        function updateXPDisplay() {
+            document.getElementById('xpValue').textContent = appState.xp;
+            document.getElementById('xpFloatValue').textContent = appState.xp;
+        }
+        function renderBadges() {
+            const grid = document.getElementById('badgesGrid');
+            grid.innerHTML = '';
+            quizSections.forEach(sec => {
+                const earned = appState.badges.includes('badge-' + sec.id);
+                const el = document.createElement('div');
+                el.className = 'badge-item' + (earned ? ' earned' : '');
+                el.innerHTML = `${sec.icon}<span class="badge-tooltip">${sec.title}</span>`;
+                grid.appendChild(el);
+            });
+        }
+        function updateOverallProgress() {
+            const total = quizSections.length;
+            const completed = Object.keys(appState.completedSections).length;
+            document.getElementById('overallProgressFill').style.width = (completed / total) * 100 + '%';
+            document.getElementById('overallProgressText').textContent = `${completed} / ${total}`;
+            document.getElementById('congratsMsg').classList.toggle('show', completed === total);
+        }
+
+        // ============================================================
+        // 9. هل تعلم
+        // ============================================================
+        function renderFacts() {
+            const grid = document.getElementById('factsGrid');
+            grid.innerHTML = '';
+            factsData.forEach(fact => {
+                const card = document.createElement('div');
+                card.className = 'fact-card';
+                card.innerHTML = `
+                    <div class="fact-front"><div class="fact-icon">${fact.icon}</div><h4>${fact.title}</h4><span class="hint">اضغط للكشف</span></div>
+                    <div class="fact-back"><p>${fact.text}</p><span class="fact-ref">📖 ${fact.ref}</span></div>
+                `;
+                card.addEventListener('click', () => card.classList.toggle('revealed'));
+                grid.appendChild(card);
+            });
+        }
+        function initDailyQuestion() {
+            const today = new Date().getDate();
+            appState.lastDailyQuestionIndex = today % dailyQuestions.length;
+            const q = dailyQuestions[appState.lastDailyQuestionIndex];
+            document.getElementById('dqText').textContent = q.q;
+            document.getElementById('dqAnswerText').textContent = q.a;
+            document.getElementById('dqRef').textContent = '📖 ' + q.ref;
+            document.getElementById('revealDailyBtn').addEventListener('click', () => {
+                document.getElementById('dqAnswer').classList.add('show');
+            });
+            saveState();
+        }
+
+        // ============================================================
+        // 10. مساعدات
+        // ============================================================
+        function shuffleArray(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+        function arraysEqual(a, b) {
+            if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return false;
+            for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
+            return true;
+        }
+
+        window.addEventListener('storage', (e) => {
+            if (e.key === STORAGE_KEY) {
+                loadState();
+                updateXPDisplay();
+                updateOverallProgress();
+                renderQuizCards();
+                renderBadges();
+            }
+        });
+    </script>
+</body>
+</html>
